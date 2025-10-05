@@ -108,10 +108,13 @@ def get_documentation(code: str, max_characters: int = 10000) -> str:
         return f"<documentation extraction failed: {str(e)}>"
 
     docs = []
+    prefixes = (
+        'pandas.', 'pd.', 'numpy.', 'np.', 'matplotlib.', 'plt.', 'seaborn.', 'sns.',
+        'statsmodels.', 'sm.', 'linearmodels.', 'sklearn.'
+    )
     for name in sorted(set(call_names)):
-        # Only include functions that start with 'sc.' (scanpy) or 'scvi.' (scvi-tools)
-        ###### MODIFY IN NEEDED FOR OTHER PACKAGES ######
-        if not (name.startswith('sc.') or name.startswith('scvi.') or name.startswith('scanpy.')):
+        # Only include common empirical-econ libraries
+        if not name.startswith(prefixes):
             continue
             
         try:
@@ -128,12 +131,13 @@ def get_documentation(code: str, max_characters: int = 10000) -> str:
 # --- Usage Example ---
 
 code = """
-import scanpy as sc
+import pandas as pd
+import statsmodels.api as sm
 import numpy as np
-from matplotlib import pyplot as plt
 
-X = np.vstack([np.random.random((100, 2)), np.random.random((100, 2))])
-plt.scatter(X[:,0], X[:,1])
+df = pd.DataFrame({'y':[1,2,3], 'x':[0.1,0.2,0.3]})
+X = sm.add_constant(df[['x']])
+sm.OLS(df['y'], X)
 """
 
 print(len(get_documentation(code)))

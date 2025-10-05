@@ -1,8 +1,9 @@
 import os
 import json
-import openai
+from dotenv import load_dotenv
 from agent import AnalysisAgent
-from notebook_generator import generate_notebook
+
+load_dotenv()
 
 # Initialize the agent
 agent = AnalysisAgent(

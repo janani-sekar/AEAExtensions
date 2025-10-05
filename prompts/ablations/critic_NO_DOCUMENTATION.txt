@@ -1,5 +1,5 @@
 You will be given a hypothesis, analysis plan, and the python code for the first step in that analysis plan.
-This analysis plan is for generating a novel single-cell transcriptomic analysis that is distinct from the analyses
+This analysis plan is for generating a novel empirical economics analysis that is distinct from the analyses
 conducted in the research paper below and distinct from the previous analyses attempted.
 
 Your role is to provide feedback for the first step python code as well as for the analysis plan.
@@ -17,7 +17,7 @@ Code for first step in analysis plan:
 
 {CODING_GUIDELINES}
 
-You are given the following summary of the anndata object:
+You are given the following summary of the dataset (columns and unique values):
 {adata_summary}
 
 Here is the code from the last 3 steps. Make sure the modified code builds on the past analyses and doesn't repeat any of them:

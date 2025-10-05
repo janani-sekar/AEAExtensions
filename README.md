@@ -1,68 +1,173 @@
-<div align="center">
-<img src="images/logo.jpeg" alt="CellVoyager Logo" width="700">
-</div>
+# AEA Extensions: Automated Empirical Economics Analysis Agent
 
-## Running CellVoyager
-First clone the current repository as:
-```
-git clone https://github.com/zou-group/CellVoyager.git
-cd CellVoyager
-```
+An AI agent that automatically generates and executes empirical economics analyses on replication packages.
 
+## Setup
 
-To create the necessary environment, run
-```
-conda env create -f CellVoyager_env.yaml
-conda activate CellVoyager
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd AEAExtensions
 ```
 
-To run the agent, use the following command:
-```
-python run.py --h5ad-path PATH_TO_H5AD_DATASET \
-              --paper-path PATH_TO_PAPER_SUMMARY \
-              --analysis-name RUN_NAME
-```
-where
-* `h5ad-path` is the absolute path of the anndata `.h5ad` file
-* `paper-path` is the absolute path of a `.txt` file containing the LLM or human generated summary of the paper
-* `analysis-name` is the name you want your analysis files to be saved under
-
-
-The current implementation of the model only support OpenAI models. As a result, it assumes you have `.env` file that contains
-```
-OPENAI_API_KEY=sk-xxxxxxxxxxxxx
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
 ```
 
-## Example
-We are going to use the COVID-19 case study from the CellVoyager, which builds on [this paper](https://www.nature.com/articles/s41591-020-0944-y).
-
-
-To download the `.h5ad` object run
-```
-curl -o example/covid19.h5ad "https://hosted-matrices-prod.s3-us-
-west-2.amazonaws.com/Single_cell_atlas_of_peripheral_immune_response_to_SARS_CoV_2_infection-25/Single_cell_atlas_of_peripheral_immune_response_to_S
-ARS_CoV_2_infection.h5ad"
-```
-An example summary of the associated manuscript is already included in `example/covid19_summary.txt`.
-
-
-Then simply run `python run.py` which by default uses the COVID-19 dataset and manuscript summary. You will see the Jupyter notebooks in an `outputs` directory, which will update the notebook in real-time. Currently, the notebooks are run sequentially, but we are currently experimenting with ways to parallelize this.
-
-## CellBench
-
-To run base LLMs (gpt-4o, o3-mini) 3x on CellBench:
-
-```
-cd CellBench
-python run_base_llm.py
-python run_llm_judge.py
+3. Set your OpenAI API key:
+```bash
+# Create a .env file
+echo "OPENAI_API_KEY=sk-xxxxxxxxxxxxx" > .env
 ```
 
-To run agent 3x on CellBench:
+## Quick Start
 
-```
-cd CellBench
-python run_agent.py {gpt-4o|o3-mini}
+### Running on AEA Replication Packages
+
+1. **Download a replication package manually**:
+   - Go to [AEA Data and Code Repository](https://www.aeaweb.org/journals/datasets)
+   - Find a paper (e.g., [Insecurity and Firm Displacement](https://www.openicpsr.org/openicpsr/project/208787/version/V1/view))
+   - Click "Download this project" (requires free ICPSR account)
+   - Unzip to a local directory:
+     ```bash
+     mkdir -p aea_packages
+     unzip 208787_V1.zip -d aea_packages/208787_V1
+     ```
+
+2. **Catalog the data** (optional, to see what files were discovered):
+```bash
+python run.py --data-dir aea_packages/208787_V1 \
+  --paper-pdf aea_packages/208787_V1/paper.pdf \
+  --analysis-name my_analysis \
+  --catalog-only
 ```
 
-Metrics should be printed to stdout and saved in the `responses` and `judged` dirs.
+3. **Run the analysis**:
+```bash
+python run.py --data-dir aea_packages/208787_V1 \
+  --paper-pdf aea_packages/208787_V1/paper.pdf \
+  --analysis-name my_analysis \
+  --num-analyses 1 \
+  --max-iterations 2 \
+  --max-fix-attempts 2
+```
+
+### Running on a Single Dataset
+
+If you have a single CSV/Parquet/Stata file:
+
+```bash
+python run.py --data-path path/to/data.csv \
+  --paper-pdf path/to/paper.pdf \
+  --analysis-name my_analysis \
+  --num-analyses 1 \
+  --max-iterations 2
+```
+
+Or with a text summary instead of PDF:
+```bash
+python run.py --data-path path/to/data.csv \
+  --paper-path path/to/summary.txt \
+  --analysis-name my_analysis \
+  --num-analyses 1 \
+  --max-iterations 2
+```
+
+## What It Does
+
+1. **Data Discovery** (if using `--data-dir`):
+   - Scans directory for tabular files (CSV, Parquet, Feather, Stata)
+   - Builds a catalog with column metadata
+   - Selects primary analysis file using heuristics (panel structure, treatment indicators)
+
+2. **Paper Understanding**:
+   - Extracts text from PDF (if `--paper-pdf` provided)
+   - Summarizes research question, variables, identification strategy
+   - Uses Deep Research to gather additional context
+
+3. **Analysis Generation**:
+   - Proposes novel analyses distinct from the paper
+   - Generates Python code (pandas, statsmodels, linearmodels)
+   - Executes in Jupyter notebooks with auto-fixing on errors
+   - Interprets results and suggests next steps
+
+4. **Outputs**:
+   - Notebooks: `outputs/<analysis_name>_<timestamp>/*.ipynb`
+   - Logs: `logs/<analysis_name>_log_<timestamp>.log`
+   - Catalog: `logs/dataset_catalog_<timestamp>.json` (if using `--data-dir`)
+
+## Command-Line Options
+
+### Data Input
+- `--data-path`: Single tabular file (CSV/Parquet/Feather/Stata)
+- `--data-dir`: Directory with multiple files (replication package)
+- `--data-glob`: File patterns to discover (default: `*.csv,*.parquet,*.feather,*.dta`)
+- `--primary-file`: Override primary file selection within `--data-dir`
+
+### Paper Input
+- `--paper-pdf`: PDF of research paper (auto-extracts and summarizes)
+- `--paper-path`: Pre-written text summary
+
+### Analysis Control
+- `--analysis-name`: Name for output files (default: `covid19`)
+- `--num-analyses`: Number of distinct analyses (default: `8`)
+- `--max-iterations`: Steps per analysis (default: `6`)
+- `--max-fix-attempts`: Auto-fix attempts on errors (default: `3`)
+- `--model-name`: OpenAI model (default: `o3-mini`)
+
+### Optional Features
+- `--no-self-critique`: Disable self-critique loop
+- `--no-vlm`: Disable vision language model for plots
+- `--no-documentation`: Disable doc-assisted error fixing
+- `--log-prompts`: Save all prompts to logs
+- `--catalog-only`: Build catalog and exit (no analysis)
+
+### Schema Hints (Optional)
+- `--outcome`: Outcome variable column name
+- `--treatment`: Treatment indicator column name
+- `--time-var`: Time variable for panels/event studies
+- `--unit-var`: Unit identifier for panels
+- `--cluster-se`: Column for clustering standard errors
+
+## Example Workflow
+
+```bash
+# 1. Download replication package from openICPSR
+# (manual download required; see above)
+
+# 2. Quick test (1 analysis, 1 iteration, no recovery)
+python run.py --data-dir aea_packages/208787_V1 \
+  --paper-pdf aea_packages/208787_V1/paper.pdf \
+  --analysis-name quick_test \
+  --num-analyses 1 --max-iterations 1 --max-fix-attempts 0 \
+  --no-self-critique --no-vlm --no-documentation
+
+# 3. Full run with all features
+python run.py --data-dir aea_packages/208787_V1 \
+  --paper-pdf aea_packages/208787_V1/paper.pdf \
+  --analysis-name full_run \
+  --num-analyses 2 --max-iterations 3 --max-fix-attempts 2 \
+  --log-prompts
+```
+
+## Included Example
+
+A small demo dataset and paper summary are included:
+
+```bash
+python run.py --data-path example/econ_demo.csv \
+  --paper-path example/econ_paper_summary.txt \
+  --analysis-name demo \
+  --num-analyses 1 --max-iterations 2
+```
+
+## Requirements
+
+- Python 3.8+
+- OpenAI API key
+- See `requirements.txt` for package dependencies
+
+## License
+
+See `LICENSE` file.

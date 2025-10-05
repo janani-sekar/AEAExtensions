@@ -15,7 +15,7 @@ Feedback:
 
 {CODING_GUIDELINES}
 
-You are given the following summary of the anndata object:
+You are given the following summary of the dataset (columns and unique values):
 {adata_summary}
 
 Here is the Jupyter notebook containing the previous steps and their generated interpretations:

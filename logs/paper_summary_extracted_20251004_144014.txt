@@ -1,0 +1,17 @@
+**Summary of the Paper: "Apart but Connected: Online Tutoring, Cognitive Outcomes, and Soft Skills"**
+
+**Research Question:** This paper investigates the effectiveness of the Tutoring Online Program (TOP) in improving cognitive outcomes, soft skills, and aspirations among underprivileged middle school students during and after the COVID-19 pandemic.
+
+**Dataset(s):** The study uses a dataset from two implementations of the TOP in Italy, one during school closures in 2020 and another during regular schooling in 2022, involving over 4,000 students and approximately 1,000 tutors.
+
+**Key Variables:**
+- **Likely Outcome:** Math performance (grades, failure rates, standardized test scores).
+- **Treatment:** Assignment to online tutoring (3 vs. 6 hours per week, individual vs. group tutoring).
+- **Time:** 2020 (during lockdown) and 2022 (normal school context).
+- **Unit:** Individual students.
+
+**Identification Strategy:** The paper utilizes a randomized controlled trial (RCT) design with random assignment of tutors to students to isolate the impact of tutoring. The authors employ OLS regression to estimate treatment effects, adjusting for baseline characteristics and accounting for multiple hypothesis testing.
+
+**Notable Caveats:** The program's effectiveness in enhancing socio-emotional skills and aspirations was significant only during the pandemic phase. Tutor characteristics had little effect on the tutoring outcomes. Attrition rates differ by treatment, with higher completion rates among treated students, potentially biasing results. Moreover, outcomes were primarily focused on math, with less robust findings in other subjects like Italian and English.
+
+In conclusion, the study suggests that online tutoring can effectively bridge educational gaps for disadvantaged students, emphasizing the potential for continued implementation beyond emergency contexts.

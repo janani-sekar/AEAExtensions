@@ -8,8 +8,6 @@ import numpy as np
 import datetime
 from logger import Logger
 import base64
-import h5py
-from h5py import Dataset, Group
 import re
 import shutil
 from jupyter_client import KernelManager
@@ -17,13 +15,15 @@ from nbformat.v4 import new_code_cell, new_output
 from deepresearch import DeepResearcher
 from utils import get_documentation
 
-AVAILABLE_PACKAGES = "scanpy, scvi, anndata, matplotlib, numpy, seaborn, pandas, scipy"
+AVAILABLE_PACKAGES = "pandas, numpy, matplotlib, seaborn, statsmodels, linearmodels, scikit-learn, scipy"
 class AnalysisAgent:
-    def __init__(self, h5ad_path, paper_summary_path, openai_api_key, model_name, analysis_name, 
+    def __init__(self, paper_summary_path, openai_api_key, model_name, analysis_name, 
                 num_analyses=5, max_iterations=6, prompt_dir="prompts", output_home=".", log_home=".",
                 use_self_critique=True, use_VLM=True, use_documentation=True, log_prompts = False,
-                max_fix_attempts=3, use_deepresearch_background=True):
+                max_fix_attempts=3, use_deepresearch_background=True, data_path=None, h5ad_path=None,
+                outcome_var=None, treatment_var=None, time_var=None, unit_var=None, cluster_se_var=None):
         self.h5ad_path = h5ad_path
+        self.data_path = data_path
         self.paper_summary = open(paper_summary_path).read()
         self.openai_api_key = openai_api_key
         self.model_name = model_name
@@ -34,6 +34,13 @@ class AnalysisAgent:
         self.log_prompts = log_prompts
         self.max_fix_attempts = max_fix_attempts
         self.use_deepresearch_background = use_deepresearch_background
+
+        # Optional schema context (may be None)
+        self.outcome_var = outcome_var
+        self.treatment_var = treatment_var
+        self.time_var = time_var
+        self.unit_var = unit_var
+        self.cluster_se_var = cluster_se_var
         
         # Create unique output directory based on analysis name and timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -66,7 +73,7 @@ class AnalysisAgent:
         # Finalize coding guidelines with the (possibly augmented) overview
         self.coding_guidelines = self.coding_guidelines_template.format(
             name=self.analysis_name,
-            adata_path=self.h5ad_path,
+            adata_path=self.data_path,
             available_packages=AVAILABLE_PACKAGES,
             analyses_overview=self._analyses_overview,
         )
@@ -80,15 +87,12 @@ class AnalysisAgent:
         self.kernel_manager = None
         self.kernel_client = None
 
-        # Load the .obs data from the anndata file
-        if self.h5ad_path == "": # JUST FOR BENCHMARKING
-            self.adata_summary = ""
-        else:
-            print("Loading anndata .obs for summarization...")
-            self.adata_obs = self.load_h5ad_obs(self.h5ad_path)
-            self.adata_summary = self.summarize_adata_metadata()
-            print("ADATA SUMMARY: ", self.adata_summary)
-            print(f"✅ Loaded {self.h5ad_path}")
+        # Load tabular dataset for summarization (tabular preferred if provided)
+        print("Loading tabular dataset for summarization...")
+        self.adata_obs = self.load_tabular_obs(self.data_path)
+        self.adata_summary = self.summarize_adata_metadata()
+        print("ADATA SUMMARY: ", self.adata_summary)
+        print(f"✅ Loaded {self.data_path}")
 
         if self.use_deepresearch_background:
             # DeepResearch for idea generation
@@ -139,79 +143,22 @@ class AnalysisAgent:
         
         return jupyter_summary
 
-    def load_h5ad_obs(self, h5ad_path):
-        """Load just the .obs data from an h5ad file while preserving data types"""
-        with h5py.File(h5ad_path, 'r') as f:
-            obs_dict = {}
-            
-            # Process each column in obs
-            for raw_k in [k for k in f['obs'].keys() if not k.startswith('_')]:
-                # Decode the column name if it's bytes
-                k = raw_k.decode('utf-8') if isinstance(raw_k, bytes) else raw_k
-                
-                item = f['obs'][raw_k]
-                if isinstance(item, Dataset):
-                    data = item[:]
-                elif isinstance(item, Group) and \
-                    'codes' in item.keys() and 'categories' in item.keys():
-                    data = item['codes'][:]
-                    categories = item['categories'][:]
-                    categories = [x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in categories]
-                    data = pd.Categorical.from_codes(
-                        data.astype(int) if not np.issubdtype(data.dtype, np.integer) else data,
-                        categories=categories
-                    )
-                else:
-                    raise ValueError(f'uwu didnt account for this datatype in h5ad: {type(item)}')
-                
-                # Handle categorical data
-                if 'categories' in item.attrs:
-                    try:
-                        # Get category values (handling references if needed)
-                        cat_ref = item.attrs['categories']
-                        if isinstance(cat_ref, h5py.h5r.Reference):
-                            # Dereference to get categories
-                            cat_vals = f[cat_ref][:]
-                            categories = [x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in cat_vals]
-                        else:
-                            # Normal categories
-                            cat_vals = cat_ref[:]
-                            categories = [x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in cat_vals]
-                        
-                        # Create categorical data
-                        data = pd.Categorical.from_codes(
-                            data.astype(int) if not np.issubdtype(data.dtype, np.integer) else data,
-                            categories=categories
-                        )
-                    except Exception as e:
-                        print(f"Warning: Error with categorical {k}: {str(e)}")
-                        data = np.array([x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in data])
-                
-                # Handle string data
-                elif data.dtype.kind in ['S', 'O'] or h5py.check_string_dtype(f['obs'][raw_k].dtype) is not None:
-                    try:
-                        # Make sure all byte strings are decoded
-                        data = np.array([x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in data])
-                    except Exception as e:
-                        print(f"Warning: Error decoding strings in {k}: {str(e)}")
-                
-                obs_dict[k] = data
-            
-            # Get index
-            try:
-                if '_index' in f['obs']:
-                    idx = f['obs']['_index'][:]
-                    # Decode index values if they're bytes
-                    index = np.array([x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in idx])
-                else:
-                    index = None
-            except Exception as e:
-                print(f"Warning: Error processing index: {str(e)}")
-                index = None
-        
-        # Create dataframe
-        df = pd.DataFrame(obs_dict, index=index)
-        print(f"Loaded obs data: {len(df)} rows × {len(df.columns)} columns")
+    # removed load_h5ad_obs (AnnData path)
+
+    def load_tabular_obs(self, data_path):
+        """Load tabular datasets (csv, parquet, feather, dta) into a DataFrame."""
+        ext = os.path.splitext(data_path)[1].lower()
+        if ext == ".csv":
+            df = pd.read_csv(data_path)
+        elif ext == ".parquet":
+            df = pd.read_parquet(data_path)
+        elif ext == ".feather":
+            df = pd.read_feather(data_path)
+        elif ext == ".dta":
+            df = pd.read_stata(data_path)
+        else:
+            raise ValueError(f"Unsupported data file extension for tabular load: {ext}")
+        print(f"Loaded tabular data: {len(df)} rows × {len(df.columns)} columns")
         return df
 
     def generate_initial_analysis(self, attempted_analyses):
@@ -265,7 +212,7 @@ class AnalysisAgent:
         # Keep only the most recent cells up to code_memory_size
         self.code_memory = code_cells[-self.code_memory_size:] if len(code_cells) > 0 else []
         
-    def generate_next_step_analysis(self, analysis, attempted_analyses, notebook_cells, results_interpretation, num_steps_left):
+    def generate_next_step_analysis(self, analysis, attempted_analyses, notebook_cells, results_interpretation, num_steps_left, seeded=False):
         hypothesis = analysis["hypothesis"]
         analysis_plan = analysis["analysis_plan"]
         first_step_code = analysis["first_step_code"]
@@ -281,7 +228,7 @@ class AnalysisAgent:
         if seeded:
             prompt = open(os.path.join(self.prompt_dir, "next_step_seeded.txt")).read()
             prompt = prompt.format(hypothesis=hypothesis, analysis_plan = analysis_plan, num_steps_left=num_steps_left,
-                                 CODING_GUIDELINES=self.coding_guidelines, jupyter_notebook=jupyter_summary,
+                                 CODING_GUIDELINES=self.coding_guidelines, 
                                  jupyter_notebook=jupyter_summary, adata_summary=self.adata_summary, past_analyses=attempted_analyses,
                                  paper_txt=self.paper_summary)
         else:
@@ -1218,7 +1165,49 @@ Consider these alternatives for the next analysis step:
         notebook.cells.append(nbf.v4.new_markdown_cell(f"# Analysis\n\n**Hypothesis**: {hypothesis}"))
         
         # Add setup code to import libraries and load data with enhanced visualization setup
-        setup_code = f"""import scanpy as sc
+        if getattr(self, 'data_path', None):
+            ext = os.path.splitext(self.data_path)[1].lower()
+            if ext == ".csv":
+                load_snippet = f"df = pd.read_csv('{self.data_path}')"
+            elif ext == ".parquet":
+                load_snippet = f"df = pd.read_parquet('{self.data_path}')"
+            elif ext == ".feather":
+                load_snippet = f"df = pd.read_feather('{self.data_path}')"
+            elif ext == ".dta":
+                load_snippet = f"df = pd.read_stata('{self.data_path}')"
+            else:
+                load_snippet = "raise ValueError('Unsupported data extension')"
+
+            setup_code = f"""import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+import warnings
+
+# Econometrics libraries
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+try:
+    from linearmodels.panel import PanelOLS
+except Exception:
+    PanelOLS = None
+
+# Visualization defaults
+plt.rcParams['figure.figsize'] = (10, 8)
+plt.rcParams['savefig.dpi'] = 150
+sns.set_style('whitegrid')
+sns.set_context('notebook', font_scale=1.2)
+warnings.filterwarnings('ignore')
+
+# Load data
+print('Loading data...')
+{load_snippet}
+print(f"Data loaded: {{df.shape[0]}} rows and {{df.shape[1]}} columns")
+print('Columns:', list(df.columns)[:20])
+"""
+        else:
+            setup_code = f"""import scanpy as sc
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -1279,6 +1268,32 @@ print(f"Data loaded: {{adata.shape[0]}} cells and {{adata.shape[1]}} genes")
         
         return notebook
 
+
+    def improve_notebook(self, notebook_path, feedback, output_path=None):
+        """Append a feedback markdown cell to a notebook; create if missing.
+
+        Args:
+            notebook_path (str): Path to existing notebook to improve.
+            feedback (str): Feedback text to append as markdown.
+            output_path (str, optional): Where to save the improved notebook. Defaults to overwrite input path.
+        """
+        try:
+            if os.path.exists(notebook_path):
+                with open(notebook_path, 'r', encoding='utf-8') as f:
+                    nb = nbf.read(f, as_version=4)
+            else:
+                nb = nbf.v4.new_notebook()
+
+            nb.cells.append(nbf.v4.new_markdown_cell(f"### Feedback\n\n{feedback}"))
+
+            target_path = output_path or notebook_path
+            os.makedirs(os.path.dirname(target_path) or '.', exist_ok=True)
+            clean_nb = self.cleanup_notebook_outputs(nb)
+            with open(target_path, 'w', encoding='utf-8') as f:
+                nbf.write(clean_nb, f)
+            print(f"💾 Saved improved notebook to: {target_path}")
+        except Exception as e:
+            print(f"⚠️ Failed to improve notebook: {e}")
 
 def strip_code_markers(text):
     # Remove ```python, ``` and ```

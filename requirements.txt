@@ -1,0 +1,17 @@
+matplotlib
+numpy
+seaborn
+pandas
+scipy
+nbformat
+nbconvert
+python-dotenv
+tqdm
+ipykernel
+openai
+statsmodels
+linearmodels
+scikit-learn
+pyarrow
+pypdf
+requests

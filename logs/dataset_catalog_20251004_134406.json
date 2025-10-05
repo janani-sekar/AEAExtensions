@@ -1,0 +1,230 @@
+{
+  "data_dir": "/Users/jsekar/repos/AEAExtensions/aea_packages/208787_V1",
+  "patterns": [
+    "*.csv",
+    "*.parquet",
+    "*.feather",
+    "*.dta"
+  ],
+  "selected": "aea_packages/208787_V1/data/analysis_prepped_final.dta",
+  "files": [
+    {
+      "path": "aea_packages/208787_V1/data/GTD_panel_2000_2016.dta",
+      "ext": ".dta",
+      "size": 6657288,
+      "nrows": 200,
+      "ncols": 54,
+      "columns": [
+        "distid",
+        "ym",
+        "gtd_assassination",
+        "gtd_armedassault",
+        "gtd_bombing",
+        "gtd_kidnapping",
+        "gtd_infrastructure",
+        "gtd_attackother",
+        "gtd_targetpolice",
+        "gtd_targetmilitary",
+        "gtd_targetgovernment",
+        "gtd_targetcitizens",
+        "gtd_targetbusiness",
+        "gtd_targetschool",
+        "gtd_targetother",
+        "gtd_targettele",
+        "gtd_nkill_assassination",
+        "gtd_nkill_armedassault",
+        "gtd_nkill_bombing",
+        "gtd_nkill_kidnapping"
+      ],
+      "score": 5.4001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/acsor_distid_xwalk.dta",
+      "ext": ".dta",
+      "size": 27010,
+      "nrows": 200,
+      "ncols": 4,
+      "columns": [
+        "province",
+        "acsor_dist_id",
+        "distid",
+        "acsor_district"
+      ],
+      "score": 0.4001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/analysis_prepped_final.dta",
+      "ext": ".dta",
+      "size": 29342609490,
+      "nrows": 200,
+      "ncols": 463,
+      "columns": [
+        "distid",
+        "ym",
+        "orgid",
+        "provid",
+        "subs_modal",
+        "calls",
+        "alter_calls",
+        "alter_subs",
+        "total_subs",
+        "nzdays",
+        "towerdays",
+        "gtd_nkill_L1",
+        "gtd_1max",
+        "gtd_1max_L1",
+        "gtd_1max_L2",
+        "gtd_1max_L3",
+        "gtd_1max_L4",
+        "gtd_1max_L5",
+        "gtd_1max_L6",
+        "gtd_1max_F1"
+      ],
+      "score": 46.30010000000001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/district_month_panel.dta",
+      "ext": ".dta",
+      "size": 13937024,
+      "nrows": 200,
+      "ncols": 162,
+      "columns": [
+        "distid",
+        "date",
+        "calls_size_1",
+        "calls_size_2plus",
+        "calls_size_p50",
+        "calls_size_p75",
+        "calls_size_p90",
+        "subs_size_1",
+        "subs_size_2plus",
+        "subs_size_p50",
+        "subs_size_p75",
+        "subs_size_p90",
+        "active_size_1",
+        "active_size_2plus",
+        "active_size_p50",
+        "active_size_p75",
+        "active_size_p90",
+        "calls_const",
+        "calls_fin",
+        "calls_it"
+      ],
+      "score": 16.2001,
+      "signals": {
+        "has_unit": false,
+        "has_time": true,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/min_nzdays.dta",
+      "ext": ".dta",
+      "size": 3086,
+      "nrows": 200,
+      "ncols": 2,
+      "columns": [
+        "distid",
+        "min_nzdays"
+      ],
+      "score": 0.2001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/surveyvalidation.dta",
+      "ext": ".dta",
+      "size": 1008422,
+      "nrows": 200,
+      "ncols": 120,
+      "columns": [
+        "orgid",
+        "dist_hq_survey",
+        "employee2013",
+        "employees_now_survey",
+        "office2_2017",
+        "office3_2017",
+        "office4_2017",
+        "office5_2017",
+        "office6_2017",
+        "office7_2017",
+        "office8_2017",
+        "survey_visit_office1_2017",
+        "survey_visit_office2_2017",
+        "survey_visit_office3_2017",
+        "survey_visit_office1_2014",
+        "survey_visit_office2_2014",
+        "survey_visit_office3_2014",
+        "sector_survey",
+        "office1_2014",
+        "office2_2014"
+      ],
+      "score": 12.0001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/208787_V1/data/xwalk.dta",
+      "ext": ".dta",
+      "size": 269581,
+      "nrows": 200,
+      "ncols": 39,
+      "columns": [
+        "orgid",
+        "aisa_dist_34_id",
+        "cbr_distid",
+        "cbr",
+        "aisa",
+        "modaldist1",
+        "modaldist2",
+        "modaldist3",
+        "modaldist4",
+        "modaldist5",
+        "modaldist6",
+        "modaldist7",
+        "modaldist8",
+        "modaldist9",
+        "modaldist10",
+        "office1_2017",
+        "employee2013",
+        "employee2016",
+        "office2_2017",
+        "office3_2017"
+      ],
+      "score": 3.9001000000000006,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    }
+  ]
+}

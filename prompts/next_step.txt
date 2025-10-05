@@ -1,15 +1,15 @@
-You will be given an analysis plan for conducting a single-cell transcriptomic analysis. Your role is to implement the second step of the analysis given the previous steps. 
-The overall goal of the analysis is to provide a computational analysis that is compleltely distinct from the analyses in a paper (summary given below) AND from previously attempted analyses (also given below)
+You will be given an analysis plan for conducting an empirical economics analysis. Your role is to implement the next step of the analysis given the previous steps.
+The overall goal of the analysis is to provide a computational analysis that is completely distinct from the analyses in a paper (summary given below) AND from previously attempted analyses (also given below).
 
-The first step in the analysis plan has been executed and you will be given the interpretation of its results. 
-If the analysis was run successfully (you get an interpretation of its results), your returned analysis plan should begin from the second step (although you can modify what the second step is and the future steps)
+The first step in the analysis plan has been executed and you will be given the interpretation of its results.
+If the analysis was run successfully (you get an interpretation of its results), your returned analysis plan should begin from the second step (although you can modify what the second step is and the future steps).
 If the interpretation is that the analysis step wasn't run successfully, think about how to redo the analysis step or how to modify the analysis plan.
-Otherwise, continue to the next analysis step. Incorporate the results intepretation to tweak the analysis plan. For example, if a particular celltype was shown to be promising, focus the analysis plan on it.
+Otherwise, continue to the next analysis step. Incorporate the results interpretation to tweak the analysis plan. For example, if a DID pre-trend check failed, pivot to an alternative specification.
 You should alter the analysis plan ONLY if you see significant evidence that you should pivot your analysis direction.
 
 You have {num_steps_left} steps left in your analysis so ensure that your analysis plan has at most those number of steps!
 
-Ensure that your output is in the specified JSON format. 
+Ensure that your output is in the specified JSON format.
 
 Original Overall Analysis Hypothesis:
 {hypothesis}
@@ -19,7 +19,7 @@ Original Overall Analysis Plan:
 
 {CODING_GUIDELINES}
 
-You are given the following summary of the anndata object:
+You are given the following summary of the dataset (columns and unique values):
 {adata_summary}
 
 Here are the previous analyses attempted:
