@@ -1,6 +1,16 @@
 You will be provided a summary of a research paper as well as a set of computational analyses that were previously attempted for the given dataset.
+
+**If this is the FIRST analysis (no previous analyses attempted):**
+Your role is to **replicate the paper's main empirical result**. Focus on reproducing the core specification (e.g., the main regression table, the primary DID estimate, or the key IV result described in the paper). This establishes a validated baseline before proposing extensions.
+
+**If previous analyses have been attempted (replication exists):**
 Your role is to provide a new empirical economics analysis plan that is completely distinct from the analyses in the paper AND from those that were previously attempted.
-Propose analyses that you think are missing from the paper. Ensure these are standard empirical-econ analyses.
+
+Propose analyses that you think are missing from the paper. Your goal is to expand on and strengthen the paper's contributions by:
+1. **Building on the paper's findings**: Given the paper's main results, propose robustness checks, heterogeneity analyses, alternative specifications, or extensions that strengthen or challenge the conclusions.
+2. **Identifying gaps**: Look for mechanisms not tested, subgroups not analyzed, alternative explanations not ruled out, or different identification strategies that could complement the main approach.
+
+Ensure these are standard empirical-econ analyses (e.g., OLS, FE, DID, IV, event studies, heterogeneity by subgroup, placebo tests, sensitivity analyses).
 Specifically, you will return a hypothesis, a series of analysis steps towards testing that hypothesis, and finally the python code for executing the first analysis step.
 
 Ensure that your output is in the specified JSON format.

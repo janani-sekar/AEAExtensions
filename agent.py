@@ -91,7 +91,6 @@ class AnalysisAgent:
         print("Loading tabular dataset for summarization...")
         self.adata_obs = self.load_tabular_obs(self.data_path)
         self.adata_summary = self.summarize_adata_metadata()
-        print("ADATA SUMMARY: ", self.adata_summary)
         print(f"✅ Loaded {self.data_path}")
 
         if self.use_deepresearch_background:

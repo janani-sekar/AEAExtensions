@@ -1,0 +1,23 @@
+**Summary of Paper "Apart but Connected: Online Tutoring, Cognitive Outcomes, and Soft Skills"**
+
+**Research Question:** The paper investigates the effects of an online tutoring program (Tutoring Online Program, TOP) on the academic performance and socio-emotional skills of underprivileged middle school students in Italy, particularly during and after the COVID-19 pandemic.
+
+**Datasets:** The study utilizes administrative data and individual surveys collected from students, parents, tutors, and teachers before and after the tutoring interventions in 2020 and 2022.
+
+**Key Variables:**
+- **Outcome Variables:** Math performance (teacher-assigned grades, standardized tests), socio-emotional skills (aspirations, well-being).
+- **Treatment Variable:** Assignment to a tutor (3 or 6 hours per week).
+- **Time Periods:** Data is from both 2020 (during pandemic school closures) and 2022 (normal school context).
+- **Unit of Analysis:** Middle school students, primarily grades 6-8.
+
+**Identification Strategy:** The authors employ a randomized controlled trial (RCT) design, leveraging random assignment of tutors to students to estimate causal effects on educational outcomes. They compare treatment effects between different tutoring intensities and formats (individual vs. group tutoring).
+
+**Notable Findings:** 
+- The program showed significant improvements: +0.23 standard deviations (SD) in math performance in 2020 and +0.20 SD in 2022.
+- Higher tutoring intensity (6 hours) led to doubled effects compared to 3 hours.
+- The program positively impacted aspirations and psychological well-being primarily during pandemic school closures, with no significant effects noted in 2022.
+- The tutoring experience enhanced tutors' empathy but had minimal impact on their views about success and hard work.
+
+**Caveats:** The study acknowledges potential attrition bias, where control group students had lower endline survey completion rates. Also, effects on socio-emotional skills were significant only during the pandemic, raising questions about longer-term impacts in normal settings. The results may not generalize beyond the specific context of volunteer-based online tutoring in Italy.
+
+This structured summary can facilitate further analysis or discussion regarding the program's implications for educational policy and interventions aimed at mitigating learning losses, particularly in disadvantaged populations.

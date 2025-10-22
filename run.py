@@ -270,7 +270,7 @@ def main():
             return 1
         selected_data_path = args.data_path
     
-    print("🚀 Starting CellVoyager Analysis Agent")
+    print("🚀 Starting AEAExtensions Analysis Agent")
     print(f"   Data file: {selected_data_path}")
     print(f"   Paper summary: {paper_summary_path}")
     print(f"   Analysis name: {args.analysis_name}")
@@ -299,6 +299,7 @@ def main():
         use_documentation=not args.no_documentation,
         log_prompts=args.log_prompts,
         max_fix_attempts=args.max_fix_attempts,
+        
         # Pass schema context (may be None)
         outcome_var=args.outcome,
         treatment_var=args.treatment,

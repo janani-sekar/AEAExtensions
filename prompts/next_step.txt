@@ -1,5 +1,6 @@
 You will be given an analysis plan for conducting an empirical economics analysis. Your role is to implement the next step of the analysis given the previous steps.
 The overall goal of the analysis is to provide a computational analysis that is completely distinct from the analyses in a paper (summary given below) AND from previously attempted analyses (also given below).
+Your analyses should expand on and strengthen the paper by proposing robustness checks, heterogeneity analyses, alternative specifications, extensions, or tests for mechanisms/gaps that the original paper did not explore.
 
 The first step in the analysis plan has been executed and you will be given the interpretation of its results.
 If the analysis was run successfully (you get an interpretation of its results), your returned analysis plan should begin from the second step (although you can modify what the second step is and the future steps).

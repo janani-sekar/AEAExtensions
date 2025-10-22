@@ -1,0 +1,13 @@
+**Summary of "Apart but Connected: Online Tutoring, Cognitive Outcomes, and Soft Skills"**
+
+**Research Question:** This paper investigates the effectiveness of the Tutoring Online Program (TOP), an online tutoring initiative designed to improve academic performance and socio-emotional skills among disadvantaged middle school students in Italy, both during the COVID-19 pandemic (2020) and in normal school conditions (2022).
+
+**Datasets:** The study utilizes administrative data and individual surveys from approximately 2,196 students, with a detailed focus on two cohorts: TOP 2020 (1,059 participants) and TOP 2022 (1,137 participants), all of whom were matched with volunteer university tutors.
+
+**Key Variables:** The primary outcomes assessed include math performance (measured through teacher-assigned grades, failure rates, and standardized test scores), aspirations, socio-emotional skills, and psychological well-being, with both tutoring dosage (3 vs. 6 hours per week) and type (individual vs. group tutoring) as treatments of interest.
+
+**Identification Strategy:** The authors employ a randomized controlled trial (RCT) design where students were randomly assigned to receive tutoring or to a control group, enabling causal estimates of the tutoring effects. Outcomes were measured at multiple points and adjusted for baseline characteristics using OLS regression, controlling for randomization fixed effects.
+
+**Notable Caveats:** While the results indicate significant improvements for students in terms of academic and socio-emotional outcomes, the impacts on aspirations and well-being were more pronounced during the pandemic than in regular schooling. There were also high attrition rates noted in the control group during the endline assessments. Importantly, student outcomes showed modest improvements in socio-emotional metrics like empathy, particularly among tutors working with immigrant students, suggesting the complex interplay of contextual factors affecting both students and tutors.
+
+In conclusion, the study suggests that online tutoring by volunteer students can effectively address educational disparities and enhance essential life skills, presenting a cost-effective solution to improving learning outcomes among disadvantaged populations.

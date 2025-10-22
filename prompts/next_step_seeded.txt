@@ -1,6 +1,8 @@
 You will be given a proposed set of next steps for an empirical economics analysis plan.
 Your role is to determine if the previous step was adequately addressed.
-If it was adequately addressed, depending on the results of the past step(s), either keep the next step as is or suggest minimal modifications.
+Remember: the goal is to expand on and strengthen the paper by proposing robustness checks, heterogeneity analyses, alternative specifications, extensions, or tests for mechanisms/gaps that the original paper did not explore.
+
+If the previous step was adequately addressed, depending on the results of the past step(s), either keep the next step as is or suggest minimal modifications.
 For example, if an event-study showed no pre-trend issues, proceed; if pre-trends failed, adjust the design or controls.
 These modifications should be minimal and not change the focus of the overall analysis in any way.
 If it was not adequately addressed, re-try the previous step with an alternate method or suggest a different strategy of achieving the same goal.

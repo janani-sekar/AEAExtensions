@@ -1,0 +1,180 @@
+{
+  "data_dir": "/Users/jsekar/repos/AEAExtensions/aea_packages/228584_V1",
+  "patterns": [
+    "*.csv",
+    "*.parquet",
+    "*.feather",
+    "*.dta"
+  ],
+  "selected": "aea_packages/228584_V1/Data_analysis/Data/TOP1_TOP3_Dataset.dta",
+  "files": [
+    {
+      "path": "aea_packages/228584_V1/Data_analysis/Data/Dataset_TOP_tutors_treated_control_updated.dta",
+      "ext": ".dta",
+      "size": 615015,
+      "nrows": 200,
+      "ncols": 73,
+      "columns": [
+        "q7_modules",
+        "q22_gender",
+        "q32_activities_2",
+        "q33_computer",
+        "q34_sibling_yng",
+        "q36_edu_mother",
+        "train_DSA",
+        "train_immigrants",
+        "volunteering",
+        "tutoring",
+        "subject_mat_only",
+        "subject_eng_only",
+        "subject_ita_only",
+        "subject_mat_eng",
+        "subject_mat_ita",
+        "subject_ita_eng",
+        "subject_mat_ita_eng",
+        "q1_tuf",
+        "q2_tuf",
+        "ID_tutor"
+      ],
+      "score": 7.3001000000000005,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/228584_V1/Data_analysis/Data/TOP1_TOP3_Dataset.dta",
+      "ext": ".dta",
+      "size": 2535484,
+      "nrows": 200,
+      "ncols": 261,
+      "columns": [
+        "Group_Tutoring",
+        "ID_student",
+        "ID_tutor",
+        "ID_tutor_3",
+        "SES_5",
+        "TOP1",
+        "TOP3",
+        "always_f_online_classes_pe_1",
+        "always_f_online_classes_se_1",
+        "aspirations",
+        "aspirations_uni_pe",
+        "aspirations_uni_se",
+        "aspirations_uni_te",
+        "barrier_money_sb",
+        "barrier_parents_sb",
+        "barrier_self_sb",
+        "choice_prof_se",
+        "choose_topliceo_se",
+        "choose_vocational_se",
+        "comp_skills_tub"
+      ],
+      "score": 28.1001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": true,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/228584_V1/Data_analysis/Data/TOP1_sample_demographic_characteristics.dta",
+      "ext": ".dta",
+      "size": 30164,
+      "nrows": 107,
+      "ncols": 14,
+      "columns": [
+        "perc_covid_on_1000_March",
+        "perc_covid_on_1000_April",
+        "perc_covid_on_1000_May",
+        "unemployment_2019",
+        "perc_edu_middle",
+        "perc_edu_elementary_less",
+        "perc_edu_diploma",
+        "perc_edu_university",
+        "perc_immigrant_2020_tot",
+        "treat_province",
+        "province_abbrev",
+        "macro_area_north",
+        "macro_area_center",
+        "macro_area_south"
+      ],
+      "score": 1.4000535,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/228584_V1/Data_analysis/Data/TOP1_schools.dta",
+      "ext": ".dta",
+      "size": 561316,
+      "nrows": 200,
+      "ncols": 15,
+      "columns": [
+        "voto_eng_2018",
+        "voto_ita_2018",
+        "voto_mat_2018",
+        "is_immigrant_admin",
+        "male_admin",
+        "low_escs",
+        "father_bornitaly_5",
+        "mother_bornitaly_5",
+        "mother_highschool_5",
+        "mother_degree_5",
+        "father_highschool_5",
+        "father_degree_5",
+        "group",
+        "std_wle_mat_200_5",
+        "std_wle_ita_200_5"
+      ],
+      "score": 1.5001,
+      "signals": {
+        "has_unit": false,
+        "has_time": false,
+        "has_treat": false,
+        "has_outcome": false
+      }
+    },
+    {
+      "path": "aea_packages/228584_V1/Data_analysis/Data/TOP_programs_costs_cleaned.csv",
+      "ext": ".csv",
+      "size": 17239,
+      "nrows": 20,
+      "ncols": 19,
+      "columns": [
+        "ID",
+        "authors",
+        "title",
+        "year",
+        "citation",
+        "program_name",
+        "link",
+        "outcome",
+        "currency",
+        "sample_size",
+        "location",
+        "age_range",
+        "duration",
+        "TOP_2020",
+        "TOP_2022",
+        "exch_rate",
+        "avg_effect",
+        "avg_cost",
+        "high_cost"
+      ],
+      "score": 5.90001,
+      "signals": {
+        "has_unit": true,
+        "has_time": true,
+        "has_treat": false,
+        "has_outcome": true
+      }
+    }
+  ]
+}

@@ -3,6 +3,14 @@ You will be given the hypothesis, analysis plan (which includes the current step
 This output may be in the form of text, image, both, or neither.
 
 Your role is to provide feedback that helps inform future steps of the analysis and informs whether the hypothesis is supported.
+
+**If this is the FIRST analysis (a replication attempt):**
+Explicitly assess replication success by comparing your results to the paper's reported results. Use one of these formats:
+- "✅ **Replication Success**: Successfully replicated [Table X/Figure Y]. Our estimate: [value] (paper reported: [value]). [Brief explanation of any minor differences]"
+- "⚠️ **Partial Replication**: Obtained [outcome] = [value] (paper reported: [value]). Possible reasons for discrepancy: [list potential causes like sample differences, missing controls, different SE clustering]. Despite differences, the qualitative finding [matches/differs]."
+- "❌ **Replication Not Achieved**: Could not replicate the main result. Key obstacles: [e.g., missing variable X, unclear specification, data structure mismatch]. Proceeding with best approximation using [alternative approach]."
+
+**For all analyses:**
 Comment on identification credibility (e.g., pre-trends, instrument strength), effect sizes, SEs, and what to try next.
 Just return your feedback, do not return anything else.
 
